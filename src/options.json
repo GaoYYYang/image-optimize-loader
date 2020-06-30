@@ -1,0 +1,94 @@
+{
+  "type": "object",
+  "properties": {
+    "inline": {
+      "type": "object",
+      "properties": {
+        "symbol": {
+          "type": "string",
+          "description": "Symboled image will be base64 encoded. Default with __inline"
+        },
+        "antiSymbol": {
+          "type": "string",
+          "description": "Symboled image will be base64 encoded. Default with __antiInline"
+        },
+        "limit": {
+          "description": "Enables/Disables transformation target file into base64 URIs. Default with 5000",
+          "type": ["boolean", "number", "string"]
+        },
+        "encoding": {
+          "description": "Specify the encoding which the file will be inlined with. Default with base64",
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "enum": ["utf8", "utf16le", "latin1", "base64", "hex", "ascii", "binary", "ucs2"]
+            }
+          ]
+        },
+        "mimetype": {
+          "description": "The MIME type for the file to be transformed.",
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "generator": {
+          "description": "Adding custom implementation for encoding files.",
+          "instanceof": "Function"
+        },
+        "esModule": {
+          "description": "By default, image-optimize-loader generates JS modules that use the commonjs modules instead of ES modules.",
+          "type": "boolean"
+        },
+        "disable": {
+          "type": "boolean"
+        }
+      }
+    },
+    "compress": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "enum": ["lossless", "lossy"]
+        },
+        "mozjpeg": {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        "optipng": {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        "pngquant": {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        "gifsicle": {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        "webp": {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        "svgo": {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        "bypassOnDebug": {
+          "type": "boolean"
+        },
+        "disable": {
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

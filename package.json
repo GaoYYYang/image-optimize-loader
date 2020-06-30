@@ -1,0 +1,83 @@
+{
+  "name": "img-optimize-loader",
+  "version": "1.0.0",
+  "description": "",
+  "license": "MIT",
+  "repository": "GaoYYYang/img-loader",
+  "author": "gaoyang.lamb",
+  "homepage": "https://github.com/GaoYYYang/image-optimize-loader",
+  "bugs": "https://github.com/GaoYYYang/image-optimize-loader/issues",
+  "main": "dist/index.js",
+  "engines": {
+    "node": ">= 4"
+  },
+  "scripts": {
+    "start": "npm run build -- -w",
+    "clean": "del-cli dist",
+    "prebuild": "npm run clean",
+    "build": "cross-env NODE_ENV=production babel src -d dist --copy-files",
+    "commitlint": "commitlint --from=master",
+    "security": "npm audit",
+    "lint:prettier": "prettier \"{**/*,*}.{js,json,md,yml,css,ts}\" --list-different",
+    "lint:js": "eslint --cache .",
+    "lint": "npm-run-all -l -p \"lint:**\"",
+    "test:only": "cross-env NODE_ENV=test jest",
+    "test:watch": "npm run test:only -- --watch",
+    "test:coverage": "npm run test:only -- --collectCoverageFrom=\"src/**/*.js\" --coverage",
+    "pretest": "npm run lint",
+    "test": "npm run test:coverage",
+    "prepare": "npm run build",
+    "release": "standard-version",
+    "defaults": "webpack-defaults"
+  },
+  "files": [
+    "dist"
+  ],
+  "peerDependencies": {
+    "webpack": "^4.0.0 || ^5.0.0",
+    "file-loader": "*"
+  },
+  "dependencies": {
+    "imagemin": "^7.0.1",
+    "loader-utils": "^2.0.0",
+    "mime-types": "^2.1.27",
+    "schema-utils": "^2.7.0"
+  },
+  "optionalDependencies": {
+    "imagemin-gifsicle": "^6.0.1",
+    "imagemin-mozjpeg": "^8.0.0",
+    "imagemin-optipng": "^7.1.0",
+    "imagemin-pngquant": "^8.0.0",
+    "imagemin-svgo": "^7.0.0",
+    "imagemin-webp": "^5.1.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.10.3",
+    "@babel/core": "^7.10.3",
+    "@babel/preset-env": "^7.10.3",
+    "@commitlint/cli": "^9.0.1",
+    "@commitlint/config-conventional": "^9.0.1",
+    "@webpack-contrib/defaults": "^6.3.0",
+    "@webpack-contrib/eslint-config-webpack": "^3.0.0",
+    "babel-jest": "^26.1.0",
+    "commitlint-azure-pipelines-cli": "^1.0.3",
+    "cross-env": "^7.0.2",
+    "del": "^5.1.0",
+    "del-cli": "^3.0.1",
+    "eslint": "^7.3.1",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-import": "^2.22.0",
+    "husky": "^4.2.5",
+    "jest": "^26.1.0",
+    "jest-junit": "^11.0.1",
+    "lint-staged": "^10.2.11",
+    "memfs": "^3.2.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.0.5",
+    "standard-version": "^8.0.0",
+    "webpack": "^4.43.0"
+  },
+  "keywords": [
+    "webpack"
+  ]
+}

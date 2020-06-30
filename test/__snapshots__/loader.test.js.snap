@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`loader should work: errors 1`] = `Array []`;
+
+exports[`loader should work: result 1`] = `undefined`;
+
+exports[`loader should work: warnings 1`] = `Array []`;
