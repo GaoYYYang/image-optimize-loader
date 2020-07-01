@@ -30,7 +30,7 @@ module.exports = {
         test: /\.(png|jpe?g|webp|git|svg|)$/i,
         use: [
           {
-            loader: `img-optimize-loader`
+            loader: 'img-optimize-loader'
           },
         ],
       },
@@ -460,6 +460,30 @@ Type: `[Object|Boolean]`
 
 Compress jpg images.
 
+#### `Boolean`
+
+If you don't want to compress jpg files, you can set `mozjpeg` to `false` however if you set it to `true` it will generator the settings according to `compress.mode` configuration.
+
+**webpack.config.js**
+
+```js
+module.exports = {
+  module: {
+    rules: [
+      {
+        loader: `img-optimize-loader`,
+        options: {
+          compress: {
+            mozjpeg: false
+          }
+        },
+      },
+    ],
+  },
+};
+```
+
+#### `Object`
 **webpack.config.js**
 
 ```js
@@ -485,6 +509,31 @@ Link to [mozjpeg configuration](https://github.com/imagemin/imagemin-mozjpeg)
 Type: `[Object|Boolean]`
 
 Compress png images.
+
+#### `Boolean`
+
+If you don't want to use optipng to compress png files, you can set `optipng` to `false` however if you set it to `true` it will generator the settings according to `compress.mode` configuration.
+
+**webpack.config.js**
+
+```js
+module.exports = {
+  module: {
+    rules: [
+      {
+        loader: `img-optimize-loader`,
+        options: {
+          compress: {
+            optipng: false
+          }
+        },
+      },
+    ],
+  },
+};
+```
+
+#### `Object`
 
 **webpack.config.js**
 
@@ -512,6 +561,30 @@ Type: `[Object|Boolean]`
 
 Compress png images.
 
+#### `Boolean`
+
+If you don't want to use pngquant to compress png files, you can set `pngquant` to `false` however if you set it to `true` it will generator the settings according to `compress.mode` configuration.
+
+**webpack.config.js**
+
+```js
+module.exports = {
+  module: {
+    rules: [
+      {
+        loader: `img-optimize-loader`,
+        options: {
+          compress: {
+            pngquant: false
+          }
+        },
+      },
+    ],
+  },
+};
+```
+
+#### `Object`
 **webpack.config.js**
 
 ```js
@@ -538,6 +611,30 @@ Type: `[Object|Boolean]`
 
 Compress svg images.
 
+#### `Boolean`
+
+If you don't want to compress svg files, you can set `svgo` to `false` however if you set it to `true` it will generator the settings according to `compress.mode` configuration.
+
+**webpack.config.js**
+
+```js
+module.exports = {
+  module: {
+    rules: [
+      {
+        loader: `img-optimize-loader`,
+        options: {
+          compress: {
+            svgo: false
+          }
+        },
+      },
+    ],
+  },
+};
+```
+
+#### `Object`
 **webpack.config.js**
 
 ```js
@@ -564,6 +661,30 @@ Type: `[Object|Boolean]`
 
 Compress gif images.
 
+#### `Boolean`
+
+If you don't want to compress gif files, you can set `gifsicle` to `false` however if you set it to `true` it will generator the settings according to `compress.mode` configuration.
+
+**webpack.config.js**
+
+```js
+module.exports = {
+  module: {
+    rules: [
+      {
+        loader: `img-optimize-loader`,
+        options: {
+          compress: {
+            gifsicle: false
+          }
+        },
+      },
+    ],
+  },
+};
+```
+
+#### `Object`
 **webpack.config.js**
 
 ```js
