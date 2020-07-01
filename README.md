@@ -18,7 +18,11 @@ To begin, you'll need to install `img-optimize-loader`:
 $ npm install img-optimize-loader --save-dev
 ```
 
-Then add the loader to your `webpack` config. For example:
+All you need to do is adding the `img-optimize-loader` to your `webpack` config. 
+
+You don't need to specify `file-loader` or `url-loader` manully. `img-optimize-loader` will automaticlly call `file-loader` to emit files when neccessary.
+
+For example:
 
 **webpack.config.js**
 
