@@ -51,14 +51,14 @@ import file from 'image.png';
 
 When you use `url-loader` to encode images, you can only depend on [limit](https://github.com/webpack-contrib/url-loader#limit) configuration to decide whether to enable encodeing. **As we know, the image whose size was smaller than the limit, will always be encoded.**
 
-But with `img-optimize-loader` you can take a more flexible control. You can specify every image whether to be encoded when you use it（using file query）. Still, you can use `limit` configuration to control it too.
+But with `img-optimize-loader` you can take a more flexible control. You can specify every image whether to be encoded when you use it（using file query）regardless of `limit` configuration. Still, if you don't specify it, `limit` configuration will take control.
 
 **index.js**
 ```js
-// this will let foo.png be encoded and inlined here
+// Always let foo.png be encoded and inlined here regardless of 'limit configuration'
 import encodedImage from './encode.png?__inline';
 
-// this will emit real image file here
+// Always emit real image file regardless of 'limit configuration'
 import fileImage from './emit.png?__antiInline';
 
 
