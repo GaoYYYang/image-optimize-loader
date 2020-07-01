@@ -18,9 +18,9 @@ To begin, you'll need to install `img-optimize-loader`:
 $ npm install img-optimize-loader --save-dev
 ```
 
-All you need to do is adding the `img-optimize-loader` to your `webpack` config. 
+Then, all you need to do is adding the `img-optimize-loader` to your `webpack` config. 
 
-You don't need to specify `file-loader` or `url-loader` manully. `img-optimize-loader` will automaticlly call `file-loader` to emit files when neccessary.
+> You don't need to specify extra loaders like `file-loader` or `url-loader` for your images. `img-optimize-loader` will automaticlly handle everything.
 
 For example:
 
@@ -53,9 +53,11 @@ import file from 'image.png';
 
 ### 1. Encode images and inline them into js/css files.
 
-When you use `url-loader` to encode images, you can only depend on [limit](https://github.com/webpack-contrib/url-loader#limit) configuration to decide whether to enable encodeing. **As we know, the image whose size was smaller than the limit, will always be encoded.**
+When I use `url-loader` to encode images, I can only depend on [limit](https://github.com/webpack-contrib/url-loader#limit) configuration to decide whether to enable encodeing. **As we know, the image whose size was smaller than the limit, will always be encoded.**
 
-But with `img-optimize-loader` you can take a more flexible control. You can specify every image whether to be encoded when you use it（using file query）regardless of `limit` configuration. Still, if you don't specify it, `limit` configuration will take control.
+But I found problems when i want to inline a large size image into my entry jsbundle because this image is so important to my first screen rendering; Or when I don't want to inline trivial small images because there is no need to load them in time. I can't improve my page performance in this scene with `url-loader`.
+
+Now with `img-optimize-loader` we can take more flexible control on this. We can specify every image whether or not to be encoded easily（using file query）regardless of `limit` configuration. Still, if we don't specify it, `limit` configuration will take control.
 
 **index.js**
 ```js
