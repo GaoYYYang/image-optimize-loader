@@ -52,11 +52,11 @@ function checkNeedInline(option, size) {
   return true;
 }
 
-function inlineOrEmit(options, data) {
+function inlineOrEmit(options, data, callback) {
   if (checkNeedInline.call(this, options, data.length)) {
-    inline.call(this, data, options);
+    inline.call(this, data, options, callback);
   } else {
-    emit.call(this, data, options);
+    emit.call(this, data, options, callback);
   }
 }
 
@@ -87,13 +87,13 @@ export default function loader(source) {
     const callback = this.async();
     compress(source, compressOption)
       .then(data => {
-        inlineOrEmit.call(this, { ...inlineOption, esModule, name }, data);
+        inlineOrEmit.call(this, { ...inlineOption, esModule, name }, data, callback);
       })
       .catch(err => {
         callback(err);
       });
   } else {
-    inlineOrEmit.call(this, { ...inlineOption, esModule, name }, source);
+    inlineOrEmit.call(this, { ...inlineOption, esModule, name }, source, this.callback);
   }
 }
 

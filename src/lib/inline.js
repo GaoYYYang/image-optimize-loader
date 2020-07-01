@@ -54,10 +54,10 @@ function getEncodedData(generator, mimetype, encoding, content, resourcePath) {
   return `data:${mimetype}${encoding ? `;${encoding}` : ''},${content.toString(encoding || undefined)}`;
 }
 
-export default function inline(data, inlineOption) {
+export default function inline(data, inlineOption, callback) {
   const { generator, esModule } = inlineOption;
   let { mimetype, encoding } = inlineOption;
-  const { resourcePath, callback } = this;
+  const { resourcePath } = this;
 
   mimetype = getMimetype(inlineOption.mimetype, resourcePath);
   encoding = getEncoding(inlineOption.encoding);

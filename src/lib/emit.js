@@ -6,9 +6,8 @@
 
 const fileLoader = require('file-loader');
 
-export default function emit(content, options) {
+export default function emit(content, options, callback) {
   const { name, esModule } = options;
-  const { callback } = this;
   const fallbackLoaderContext = Object.assign({}, this, {
     query: {
       esModule,

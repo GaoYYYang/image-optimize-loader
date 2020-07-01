@@ -47,7 +47,7 @@ import file from 'image.png';
 
 ## Features
 
-### 1. Encode images and inline into js/css files.
+### 1. Encode images and inline them into js/css files.
 
 When you use `url-loader` to encode images, you can only depend on [limit](https://github.com/webpack-contrib/url-loader#limit) configuration to decide whether to enable encodeing. **As we know, the image whose size was smaller than the limit, will always be encoded.**
 
