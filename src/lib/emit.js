@@ -6,11 +6,13 @@
 
 const fileLoader = require('file-loader');
 
-export default function emit(content, option) {
+export default function emit(content, options) {
+  const { name, esModule } = options;
   const { callback } = this;
   const fallbackLoaderContext = Object.assign({}, this, {
     query: {
-      esModule: option.esModule,
+      esModule,
+      name,
     },
   });
 

@@ -16,7 +16,9 @@ export default function compress(content, options) {
       thisOption = false;
     }
     if (thisOption) {
-      plugins.push(require(`imagemin-${type}`)(thisOption));
+      try {
+        plugins.push(require(`imagemin-${type}`)(thisOption));
+      } catch (e) {}
     }
   });
 

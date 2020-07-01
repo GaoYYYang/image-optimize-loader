@@ -9,18 +9,20 @@ const DEFAULT_ANTI_INLINE_SYMBOL = '__antiInline';
 const DEFAULT_INLINE_LIMIT = 5000;
 const DEFAULT_INLINE_ENCODING = 'base64';
 
-const INLINE_OPTION = {
+const DEFAULT_ES_MODULE = false;
+const DEFAULT_NAME = 'imgs/[contenthash].[ext]';
+
+const DEFAULT_INLINE_OPTION = {
   disable: false,
   symbol: DEFAULT_INLINE_SYMBOL,
   antiSymbol: DEFAULT_ANTI_INLINE_SYMBOL,
   limit: DEFAULT_INLINE_LIMIT,
   encoding: DEFAULT_INLINE_ENCODING,
-  esModule: false,
 };
 
-const LOSSY_COMPRESS_OPTION = {
+const LOSSY_LOW_COMPRESS_OPTION = {
   disable: false,
-  bypassOnDebug: true,
+  disableOnDevelopment: true,
   // default optimizers
   optipng: {
     optimizationLevel: 2,
@@ -32,24 +34,61 @@ const LOSSY_COMPRESS_OPTION = {
   },
   svgo: true,
 
-  pngquant: true,
-  gifsicle: true,
-  mozjpeg: true,
+  pngquant: {
+    quality: [0.5, 0.8],
+  },
+  gifsicle: {
+    optimizationLevel: 2,
+  },
+  mozjpeg: {
+    progressive: true,
+    quality: 80,
+  },
+};
+const LOSSY_HIGH_COMPRESS_OPTION = {
+  disable: false,
+  disableOnDevelopment: true,
+  // default optimizers
+  optipng: {
+    optimizationLevel: 4,
+  },
+  webp: {
+    quality: 100,
+    jpgQuality: 75,
+    pngQuality: 85,
+  },
+  svgo: true,
+
+  pngquant: {
+    quality: [0.2, 0.8],
+  },
+  gifsicle: {
+    optimizationLevel: 3,
+  },
+  mozjpeg: {
+    progressive: true,
+    quality: 60,
+  },
 };
 
 const LOSELESS_COMPRESS_OPTION = {
   disable: false,
-  bypassOnDebug: true,
+  disableOnDevelopment: true,
   // default optimizers
   optipng: {
     optimizationLevel: 2,
   },
   webp: {
-    quality: 100,
-    jpgQuality: 75,
-    pngQuality: 85,
+    lossless: true,
   },
   svgo: true,
 };
 
-export { INLINE_OPTION, LOSSY_COMPRESS_OPTION, LOSELESS_COMPRESS_OPTION };
+export {
+  DEFAULT_INLINE_OPTION,
+  LOSSY_HIGH_COMPRESS_OPTION,
+  LOSSY_LOW_COMPRESS_OPTION,
+  LOSELESS_COMPRESS_OPTION,
+  DEFAULT_ES_MODULE,
+  DEFAULT_NAME
+};

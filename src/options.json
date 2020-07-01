@@ -42,10 +42,6 @@
           "description": "Adding custom implementation for encoding files.",
           "instanceof": "Function"
         },
-        "esModule": {
-          "description": "By default, image-optimize-loader generates JS modules that use the commonjs modules instead of ES modules.",
-          "type": "boolean"
-        },
         "disable": {
           "type": "boolean"
         }
@@ -55,7 +51,7 @@
       "type": "object",
       "properties": {
         "mode": {
-          "enum": ["lossless", "lossy"]
+          "enum": ["lossless", "high", "low"]
         },
         "mozjpeg": {
           "additionalProperties": true,
@@ -81,7 +77,7 @@
           "additionalProperties": true,
           "type": "object"
         },
-        "bypassOnDebug": {
+        "disableOnDevelopment": {
           "type": "boolean"
         },
         "disable": {

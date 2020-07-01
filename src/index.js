@@ -10,7 +10,14 @@ import validateOptions from 'schema-utils';
 import compress from './lib/compress';
 import inline from './lib/inline';
 import emit from './lib/emit';
-import { INLINE_OPTION, LOSSY_COMPRESS_OPTION, LOSELESS_COMPRESS_OPTION } from './constants';
+import {
+  DEFAULT_INLINE_OPTION,
+  LOSSY_HIGH_COMPRESS_OPTION,
+  LOSSY_LOW_COMPRESS_OPTION,
+  LOSELESS_COMPRESS_OPTION,
+  DEFAULT_ES_MODULE,
+  DEFAULT_NAME
+} from './constants';
 import schema from './options.json';
 
 function checkNeedInline(option, size) {
@@ -45,44 +52,48 @@ function checkNeedInline(option, size) {
   return true;
 }
 
-function inlineOrEmit(inlineOption, data) {
-  if (checkNeedInline.call(this, inlineOption, data.length)) {
-    inline.call(this, data, inlineOption);
+function inlineOrEmit(options, data) {
+  if (checkNeedInline.call(this, options, data.length)) {
+    inline.call(this, data, options);
   } else {
-    emit.call(this, data, inlineOption);
+    emit.call(this, data, options);
   }
 }
 
 export default function loader(source) {
   const options = getOptions(this) || {};
   const { mode, resourcePath, resourceQuery } = this;
+  const esModule = options.esModule || DEFAULT_ES_MODULE;
+  const name = options.name || DEFAULT_NAME;
   validateOptions(schema, options, 'image-optimize-loader');
 
-  let compressOption = LOSELESS_COMPRESS_OPTION;
+  let compressOption = LOSSY_LOW_COMPRESS_OPTION;
   if (options.compress) {
-    if (options.compress.mode === 'lossy') {
-      compressOption = Object.assign(LOSSY_COMPRESS_OPTION, options.compress);
+    if (options.compress.mode === 'high') {
+      compressOption = Object.assign(LOSSY_HIGH_COMPRESS_OPTION, options.compress);
+    } else if (options.compress.mode === 'loseless') {
+      compressOption = Object.assign(LOSELESS_COMPRESS_OPTION, options.compress);
     } else {
       compressOption = Object.assign(compressOption, options.compress);
     }
   }
 
-  let inlineOption = INLINE_OPTION;
+  let inlineOption = DEFAULT_INLINE_OPTION;
   if (options.inline) {
     inlineOption = Object.assign(inlineOption, options.inline);
   }
 
-  if (mode === 'production' || compressOption.bypassOnDebug === false || !compressOption.disable) {
+  if (mode === 'production' || compressOption.disableOnDevelopment === false || !compressOption.disable) {
     const callback = this.async();
     compress(source, compressOption)
       .then(data => {
-        inlineOrEmit.call(this, inlineOption, data);
+        inlineOrEmit.call(this, { ...inlineOption, esModule, name }, data);
       })
       .catch(err => {
         callback(err);
       });
   } else {
-    inlineOrEmit.call(this, inlineOption, source);
+    inlineOrEmit.call(this, { ...inlineOption, esModule, name }, source);
   }
 }
 
