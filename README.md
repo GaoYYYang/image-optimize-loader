@@ -7,7 +7,7 @@
 # image-optimize-loader
 Help you encode(inline) and compress images when loaded with webpack. 
 
-Its encoding(inline) ability is stronger than [url-loader](https://github.com/webpack-contrib/url-loader), especially useful for performance-optimization scenarios. And it will compress images automatically both for emiting images or inlining images. without complicated configurations. 
+Its encoding(inline) ability is stronger than [url-loader](https://github.com/webpack-contrib/url-loader), especially useful for performance-optimization scenarios. And it will compress images automatically both for emiting images or inlining images, without complicated configurations. 
 
 
 ## Getting Started
@@ -19,13 +19,6 @@ $ npm install img-optimize-loader --save-dev
 ```
 
 Then add the loader to your `webpack` config. For example:
-
-**import images in index.js**
-
-```js
-import file from 'image.png';
-```
-
 
 **webpack.config.js**
 
@@ -45,7 +38,12 @@ module.exports = {
   },
 };
 ```
-And run `webpack` via your preferred method.
+**You can import your image. Compression and encoding will happen according to your configuration.**
+
+```js
+import file from 'image.png';
+```
+
 
 ## Features
 
@@ -60,7 +58,7 @@ But with `img-optimize-loader` you can take a more flexible control. You can spe
 // this will let foo.png be encoded and inlined here
 import encodedImage from './encode.png?__inline';
 
-// this will emit true image file here
+// this will emit real image file here
 import fileImage from './emit.png?__antiInline';
 
 
@@ -69,15 +67,17 @@ import fileImage from './emit.png?__antiInline';
 The query symbol `__inline` and `__antiInline` can be customed by your self.
 
 ### 2. Compress your images
-> The compress algorithm based on [imagemin](https://github.com/kevva/imagemin). Support images in png, jpg, gif, webp, svg format.
+> The compression algorithm is based on [imagemin](https://github.com/kevva/imagemin). It supports images in png, jpg, gif, webp, svg format.
 
 We support 3 levels for you to compress images automaticlly. 
 
 | level | description| 
 |-|-|
-| loseless | Only use lossless compress algorithm. Only support png/webp/svg files|
-| low | Cause less distortion，and get small files. It will compress png/jpg/svg/webp/gif|
-| high | Cause more distortion，and get smaller files. It will compress png/jpg/svg/webp/gif|
+| loseless | Only use lossless compress algorithm. Only support png/webp/svg images|
+| low | Cause a little distortion，and get small files. It will compress png/jpg/svg/webp/gif images|
+| high | Cause more distortion，and get smaller files. It will compress png/jpg/svg/webp/gif images|
+
+
 **webpack.config.js**
 ```js
 module.exports = {
@@ -102,7 +102,8 @@ module.exports = {
   },
 };
 ``````
-And you can also config the compression manually using more params.
+And you can also adjust the compression manually using [more params](https://github.com/GaoYYYang/image-optimize-loader#compressmozjpeg).
+
 ```js
 module.exports = {
   module: {
@@ -114,21 +115,28 @@ module.exports = {
             loader: 'img-optimize-loader',
             options: {
               compress: {
+                // loseless compression for png
                 optipng: {
                   optimizationLevel: 4,
                 },
+                // lossy compression for png. This will generate smaller file than optipng.
+                pngquant: {
+                  quality: [0.2, 0.8],
+                },
+                // Compression for webp.
+                // You can also tranform jpg/png into webp.
                 webp: {
                   quality: 100,
                   jpgQuality: 75,
                   pngQuality: 85,
                 },
+                // Compression for svg.
                 svgo: true,
-                pngquant: {
-                  quality: [0.2, 0.8],
-                },
+                // Compression for gif.
                 gifsicle: {
                   optimizationLevel: 3,
                 },
+                // Compression for jpg.
                 mozjpeg: {
                   progressive: true,
                   quality: 60,
@@ -205,7 +213,7 @@ module.exports = {
       {
         loader: `img-optimize-loader`,
         options: {
-          inline:{
+          inline: {
             symbol: '__inline'
           },
         },
@@ -229,7 +237,7 @@ module.exports = {
       {
         loader: `img-optimize-loader`,
         options: {
-          inline:{
+          inline: {
             antiSymbol: '__antiInline'
           },
         },
@@ -255,7 +263,7 @@ module.exports = {
       {
         loader: `img-optimize-loader`,
         options: {
-          inline:{
+          inline: {
             antiSymbol: '__antiInline'
           },
         },
@@ -287,7 +295,9 @@ module.exports = {
       {
         loader: `img-optimize-loader`,
         options: {
-          mimetype: false,
+          inline: {
+            mimetype: false,
+          }
         },
       },
     ],
@@ -308,7 +318,9 @@ module.exports = {
       {
         loader: `img-optimize-loader`,
         options: {
-          mimetype: 'image/png',
+          inline: {
+            mimetype: 'image/png',
+          }
         },
       },
     ],
@@ -338,11 +350,13 @@ module.exports = {
         test: /\.svg$/i,
         use: [
           {
-              loader: `img-optimize-loader`,
-              options: {
-              encoding: false,
-            },
-          },
+            loader: `img-optimize-loader`,
+            options: {
+              inline: {
+                encoding: false,
+              },
+            }
+          }
         ],
       },
     ],
@@ -363,7 +377,9 @@ module.exports = {
       {
         loader: `img-optimize-loader`,
         options: {
-          encoding: 'utf8',
+          inline: {
+            encoding: 'utf8',
+          }
         },
       },
     ],
@@ -387,16 +403,18 @@ module.exports = {
       {
         loader: `img-optimize-loader`,
         options: {
-          // The `mimetype` and `encoding` arguments will be obtained from your options
-          // The `resourcePath` argument is path to file.
-          generator: (content, mimetype, encoding, resourcePath) => {
-            if (/\.html$/i.test(resourcePath)) {
-              return `data:${mimetype},${content.toString()}`;
-            }
+          inline: {
+            // The `mimetype` and `encoding` arguments will be obtained from your options
+            // The `resourcePath` argument is path to file.
+            generator: (content, mimetype, encoding, resourcePath) => {
+              if (/\.html$/i.test(resourcePath)) {
+                return `data:${mimetype},${content.toString()}`;
+              }
 
-            return `data:${mimetype}${
-              encoding ? `;${encoding}` : ''
-            },${content.toString(encoding)}`;
+              return `data:${mimetype}${
+                encoding ? `;${encoding}` : ''
+              },${content.toString(encoding)}`;
+            },
           },
         },
       },
@@ -413,9 +431,10 @@ Default: `low`
 Specify the compress level.
 | level | description| 
 |-|-|
-| loseless | Only use lossless compress algorithm. Only support png/webp/svg files|
-| low | Cause less distortion，and get small files. It will compress png/jpg/svg/webp/gif|
-| high | Cause more distortion，and get smaller files. It will compress png/jpg/svg/webp/gif|
+| loseless | Only use lossless compress algorithm. Only support png/webp/svg images|
+| low | Cause a little distortion，and get small files. It will compress png/jpg/svg/webp/gif images|
+| high | Cause more distortion，and get smaller files. It will compress png/jpg/svg/webp/gif images|
+
 
 **webpack.config.js**
 
@@ -426,17 +445,9 @@ module.exports = {
       {
         loader: `img-optimize-loader`,
         options: {
-          // The `mimetype` and `encoding` arguments will be obtained from your options
-          // The `resourcePath` argument is path to file.
-          generator: (content, mimetype, encoding, resourcePath) => {
-            if (/\.html$/i.test(resourcePath)) {
-              return `data:${mimetype},${content.toString()}`;
-            }
-
-            return `data:${mimetype}${
-              encoding ? `;${encoding}` : ''
-            },${content.toString(encoding)}`;
-          },
+          compress: {
+            mode: 'high'
+          }
         },
       },
     ],
@@ -445,22 +456,134 @@ module.exports = {
 ```
 
 ### `compress.mozjpeg`
-Type: `Object`
+Type: `[Object|Boolean]`
 
 Compress jpg images.
-See [mozjpeg configuration](https://github.com/imagemin/imagemin-mozjpeg) — *Compress JPEG images*
+
+**webpack.config.js**
+
+```js
+module.exports = {
+  module: {
+    rules: [
+      {
+        loader: `img-optimize-loader`,
+        options: {
+          compress: {
+            mozjpeg: {}
+          }
+        },
+      },
+    ],
+  },
+};
+```
+
+Link to [mozjpeg configuration](https://github.com/imagemin/imagemin-mozjpeg)
 
 ### `compress.optipng`
-- [optipng](https://github.com/kevva/imagemin-optipng) — *Compress PNG images*
+Type: `[Object|Boolean]`
+
+Compress png images.
+
+**webpack.config.js**
+
+```js
+module.exports = {
+  module: {
+    rules: [
+      {
+        loader: `img-optimize-loader`,
+        options: {
+          compress: {
+            optipng: {}
+          }
+        },
+      },
+    ],
+  },
+};
+```
+
+Link to [optipng configuration](https://github.com/kevva/imagemin-optipng)
 
 ### `compress.pngquant`
-- [pngquant](https://github.com/imagemin/imagemin-pngquant) — *Compress PNG images*
+Type: `[Object|Boolean]`
+
+Compress png images.
+
+**webpack.config.js**
+
+```js
+module.exports = {
+  module: {
+    rules: [
+      {
+        loader: `img-optimize-loader`,
+        options: {
+          compress: {
+            pngquant: {}
+          }
+        },
+      },
+    ],
+  },
+};
+```
+
+Link to [pngquant configuration](https://github.com/imagemin/imagemin-pngquant)
 
 ### `compress.svgo`
-- [svgo](https://github.com/kevva/imagemin-svgo) — *Compress SVG images*
+Type: `[Object|Boolean]`
+
+Compress svg images.
+
+**webpack.config.js**
+
+```js
+module.exports = {
+  module: {
+    rules: [
+      {
+        loader: `img-optimize-loader`,
+        options: {
+          compress: {
+            svgo: {}
+          }
+        },
+      },
+    ],
+  },
+};
+```
+
+Link to [svgo configuration](https://github.com/kevva/imagemin-svgo) 
 
 ### `compress.gifsicle`
-- [gifsicle](https://github.com/kevva/imagemin-gifsicle) — *Compress GIF images*
+Type: `[Object|Boolean]`
+
+Compress gif images.
+
+**webpack.config.js**
+
+```js
+module.exports = {
+  module: {
+    rules: [
+      {
+        loader: `img-optimize-loader`,
+        options: {
+          compress: {
+            gifsicle: {}
+          }
+        },
+      },
+    ],
+  },
+};
+```
+
+Link to [gifsicle configuration](https://github.com/kevva/imagemin-gifsicle)
 
 
 ## Inspiration
