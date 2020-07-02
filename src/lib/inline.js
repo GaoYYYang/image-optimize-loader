@@ -3,9 +3,11 @@
  * @author: GaoYYYang
  * @date: 06 30 2020 4:43:36
  */
+
 import path from 'path';
+
 import mime from 'mime-types';
-import { encode } from 'punycode';
+
 function getMimetype(mimetype, resourcePath) {
   if (typeof mimetype === 'boolean') {
     if (mimetype) {
@@ -51,7 +53,9 @@ function getEncodedData(generator, mimetype, encoding, content, resourcePath) {
     return generator(content, mimetype, encoding, resourcePath);
   }
 
-  return `data:${mimetype}${encoding ? `;${encoding}` : ''},${content.toString(encoding || undefined)}`;
+  return `data:${mimetype}${encoding ? `;${encoding}` : ''},${content.toString(
+    encoding
+  )}`;
 }
 
 export default function inline(data, inlineOption, callback) {
@@ -69,6 +73,10 @@ export default function inline(data, inlineOption, callback) {
   }
   content = getEncodedData(generator, mimetype, encoding, data, resourcePath);
 
-  callback(null, `${esModule ? 'export default' : 'module.exports ='} ${JSON.stringify(content)}`);
-  return;
+  callback(
+    null,
+    `${esModule ? 'export default' : 'module.exports ='} ${JSON.stringify(
+      content
+    )}`
+  );
 }

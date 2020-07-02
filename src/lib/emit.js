@@ -4,6 +4,7 @@
  * @date: 06 30 2020 3:55:59
  */
 
+/* eslint-disable import/no-unresolved */
 const fileLoader = require('file-loader');
 
 export default function emit(content, options, callback) {

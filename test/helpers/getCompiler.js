@@ -8,7 +8,7 @@ export default (fixture, loaderOptions = {}, config = {}) => {
     mode: 'production',
     devtool: config.devtool || false,
     context: path.resolve(__dirname, '../fixtures'),
-    entry: path.resolve(__dirname, '../fixtures', fixture),
+    entry: { main: path.resolve(__dirname, '../fixtures', fixture) },
     output: {
       path: path.resolve(__dirname, '../outputs'),
       filename: '[name].bundle.js',
@@ -16,15 +16,15 @@ export default (fixture, loaderOptions = {}, config = {}) => {
     },
     module: {
       rules: [
-        {
-          test: /\.js$/i,
-          rules: [
-            {
-              loader: path.resolve(__dirname, '../../src'),
-              options: loaderOptions || {},
-            },
-          ],
-        },
+        // {
+        //   test: /\.js$/i,
+        //   rules: [
+        //     {
+        //       loader: path.resolve(__dirname, '../../src'),
+        //       options: loaderOptions || {},
+        //     },
+        //   ],
+        // },
         {
           test: /\.(png|jpg)$/i,
           rules: [

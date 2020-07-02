@@ -5,10 +5,14 @@
 </div>
 
 # image-optimize-loader
-Help you encode(inline) and compress images when loaded with webpack. 
 
-Its encoding(inline) ability is stronger than [url-loader](https://github.com/webpack-contrib/url-loader), especially useful for performance-optimization scenarios. And it will compress images automatically both for emiting images or inlining images, without complicated configurations. 
+This special **image optimize webpack loader** can:
 
+- Help you [**encode image** / **inline image**] and [**compress image** / **minify image**] when loaded with webpack.
+
+- Help you **tranform PNG/JPG images into WEBP** when needed.
+
+Its special encoding(inlining) ability is stronger than [url-loader](https://github.com/webpack-contrib/url-loader), especially useful for performance-optimization scenarios. And it will compress images automatically both for `emited image file` or `inlined images string`, without complicated configurations.
 
 ## Getting Started
 
@@ -18,7 +22,7 @@ To begin, you'll need to install `img-optimize-loader`:
 $ npm install img-optimize-loader --save-dev
 ```
 
-Then, all you need to do is adding the `img-optimize-loader` to your `webpack` config. 
+Then, all you need to do is adding the `img-optimize-loader` to your `webpack` config.
 
 > You don't need to specify extra loaders like `file-loader` or `url-loader` for your images. `img-optimize-loader` will automaticlly handle everything.
 
@@ -34,7 +38,7 @@ module.exports = {
         test: /\.(png|jpe?g|webp|git|svg|)$/i,
         use: [
           {
-            loader: 'img-optimize-loader'
+            loader: 'img-optimize-loader',
           },
         ],
       },
@@ -42,16 +46,20 @@ module.exports = {
   },
 };
 ```
+
 **You can import your image. Compression and encoding will happen according to your configuration.**
 
 ```js
 import file from 'image.png';
 ```
 
-
 ## Features
 
 ### 1. Encode images and inline them into js/css files.
+
+> **Encode image with `base64`, `utf8`, `latin1`, `hex`, `ascii`, `binary`,`ucs2`**
+
+> **Inline image into JS / CSS files**
 
 When I use `url-loader` to encode images, I can only depend on [limit](https://github.com/webpack-contrib/url-loader#limit) configuration to decide whether to enable encodeing. **As we know, the image whose size was smaller than the limit, will always be encoded.**
 
@@ -60,31 +68,39 @@ But I found problems when i want to inline a large size image into my entry jsbu
 Now with `img-optimize-loader` we can take more flexible control on this. We can specify every image whether or not to be encoded easily（using file query）regardless of `limit` configuration. Still, if we don't specify it, `limit` configuration will take control.
 
 **index.js**
+
 ```js
 // Always let foo.png be encoded and inlined here regardless of 'limit configuration'
 import encodedImage from './encode.png?__inline';
 
 // Always emit real image file regardless of 'limit configuration'
 import fileImage from './emit.png?__antiInline';
-
-
 ```
 
 The query symbol `__inline` and `__antiInline` can be customed by your self.
 
 ### 2. Compress your images
+
 > The compression algorithm is based on [imagemin](https://github.com/kevva/imagemin). It supports images in png, jpg, gif, webp, svg format.
+>
+> - **minify JPEG image**
+> - **minify PNG image**
+> - **minify GIF image**
+> - **minify WEBP image**
+> - **minify SVG image**
 
-We support 3 levels for you to compress images automaticlly. 
+We support 3 levels for you to compress images automaticlly.
 
-| level | description| 
-|-|-|
-| loseless | Only use lossless compress algorithm. Only support png/webp/svg images|
-| low | Cause a little distortion，and get small files. It will compress png/jpg/svg/webp/gif images|
-| high | Cause more distortion，and get smaller files. It will compress png/jpg/svg/webp/gif images|
+| level    | description                                                                             |
+| -------- | --------------------------------------------------------------------------------------- |
+| loseless | Only use lossless compress algorithm. Only support png/webp/svg images                  |
+| low      | Cause a little distortion，and get small files. It will compress png/jpg/svg/gif images |
+| high     | Cause more distortion，and get smaller files. It will compress png/jpg/svg/gif images   |
 
+> To deal with webp images, please refer [webp](https://github.com/GaoYYYang/image-optimize-loader#3-transform-your-pngjpg-into-webp)
 
 **webpack.config.js**
+
 ```js
 module.exports = {
   module: {
@@ -98,8 +114,8 @@ module.exports = {
               compress: {
                 // This will take more time and get smaller images.
                 mode: 'high', // 'lossless', 'low'
-                disableOnDevelopment: true
-              }
+                disableOnDevelopment: true,
+              },
             },
           },
         ],
@@ -107,7 +123,8 @@ module.exports = {
     ],
   },
 };
-``````
+```
+
 And you can also adjust the compression manually using [more params](https://github.com/GaoYYYang/image-optimize-loader#compressmozjpeg).
 
 ```js
@@ -133,8 +150,6 @@ module.exports = {
                 // You can also tranform jpg/png into webp.
                 webp: {
                   quality: 100,
-                  jpgQuality: 75,
-                  pngQuality: 85,
                 },
                 // Compression for svg.
                 svgo: true,
@@ -147,7 +162,7 @@ module.exports = {
                   progressive: true,
                   quality: 60,
                 },
-              }
+              },
             },
           },
         ],
@@ -155,6 +170,50 @@ module.exports = {
     ],
   },
 };
+```
+
+### 3. Transform your png/jpg into webp
+
+When you enable `compress.webp`, it will transform your png/jpg into webp files, and there will be no png/jpg files generated. Your source code will directly use webp file instead of png/jpg.
+
+Generally, when you can use webp without incompatibility problem
+, there will be no need to use png or jpg any more, because webp files are always smaller than their png/jpg origin.
+
+**webpack.config.js**
+
+```js
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.(png|jpe?g|webp|git|svg|)$/i,
+        use: [
+          {
+            loader: `img-optimize-loader`,
+            options: {
+              compress: {
+                // This will transform your png/jpg into webp.
+                webp: true,
+                disableOnDevelopment: true,
+              },
+            },
+          },
+        ],
+      },
+    ],
+  },
+};
+```
+
+Referer to [webp configuration](https://github.com/GaoYYYang/image-optimize-loader#compresswebp) for details.
+
+**index.js**
+
+```js
+// This two images will be transformed into webp and your source code will use the webp format.
+import encodedImage from './encode.png';
+
+import fileImage from './test.jpg';
 ```
 
 ## Options
@@ -182,7 +241,9 @@ module.exports = {
   },
 };
 ```
+
 ### `esModule`
+
 Type: `[Boolean]`
 Default: `false`
 
@@ -204,7 +265,9 @@ module.exports = {
   },
 };
 ```
+
 ### `inline.symbol`
+
 Type: `[String]`
 Default: `__inline`
 
@@ -220,7 +283,7 @@ module.exports = {
         loader: `img-optimize-loader`,
         options: {
           inline: {
-            symbol: '__inline'
+            symbol: '__inline',
           },
         },
       },
@@ -228,7 +291,9 @@ module.exports = {
   },
 };
 ```
+
 ### `inline.antiSymbol`
+
 Type: `[String]`
 Default: `__antiInline`
 
@@ -244,7 +309,7 @@ module.exports = {
         loader: `img-optimize-loader`,
         options: {
           inline: {
-            antiSymbol: '__antiInline'
+            antiSymbol: '__antiInline',
           },
         },
       },
@@ -254,11 +319,11 @@ module.exports = {
 ```
 
 ### `inline.limit`
+
 Type: `[Boolean|Number|String]`
 Default: `5000`
 
 A Number or String specifying the maximum size of a encoded image in bytes. If the image size is equal or greater than the limit `file-loader` will be used (by default) and all query parameters are passed to it.
-
 
 **webpack.config.js**
 
@@ -270,7 +335,7 @@ module.exports = {
         loader: `img-optimize-loader`,
         options: {
           inline: {
-            antiSymbol: '__antiInline'
+            antiSymbol: '__antiInline',
           },
         },
       },
@@ -303,7 +368,7 @@ module.exports = {
         options: {
           inline: {
             mimetype: false,
-          }
+          },
         },
       },
     ],
@@ -326,7 +391,7 @@ module.exports = {
         options: {
           inline: {
             mimetype: 'image/png',
-          }
+          },
         },
       },
     ],
@@ -361,8 +426,8 @@ module.exports = {
               inline: {
                 encoding: false,
               },
-            }
-          }
+            },
+          },
         ],
       },
     ],
@@ -385,7 +450,7 @@ module.exports = {
         options: {
           inline: {
             encoding: 'utf8',
-          }
+          },
         },
       },
     ],
@@ -435,12 +500,11 @@ Type: `string`
 Default: `low`
 
 Specify the compress level.
-| level | description| 
+| level | description|
 |-|-|
 | loseless | Only use lossless compress algorithm. Only support png/webp/svg images|
 | low | Cause a little distortion，and get small files. It will compress png/jpg/svg/webp/gif images|
 | high | Cause more distortion，and get smaller files. It will compress png/jpg/svg/webp/gif images|
-
 
 **webpack.config.js**
 
@@ -452,8 +516,8 @@ module.exports = {
         loader: `img-optimize-loader`,
         options: {
           compress: {
-            mode: 'high'
-          }
+            mode: 'high',
+          },
         },
       },
     ],
@@ -462,6 +526,7 @@ module.exports = {
 ```
 
 ### `compress.mozjpeg`
+
 Type: `[Object|Boolean]`
 
 Compress jpg images.
@@ -480,8 +545,8 @@ module.exports = {
         loader: `img-optimize-loader`,
         options: {
           compress: {
-            mozjpeg: false
-          }
+            mozjpeg: false,
+          },
         },
       },
     ],
@@ -490,6 +555,7 @@ module.exports = {
 ```
 
 #### `Object`
+
 **webpack.config.js**
 
 ```js
@@ -500,8 +566,8 @@ module.exports = {
         loader: `img-optimize-loader`,
         options: {
           compress: {
-            mozjpeg: {}
-          }
+            mozjpeg: {},
+          },
         },
       },
     ],
@@ -512,6 +578,7 @@ module.exports = {
 Link to [mozjpeg configuration](https://github.com/imagemin/imagemin-mozjpeg)
 
 ### `compress.optipng`
+
 Type: `[Object|Boolean]`
 
 Compress png images.
@@ -530,8 +597,8 @@ module.exports = {
         loader: `img-optimize-loader`,
         options: {
           compress: {
-            optipng: false
-          }
+            optipng: false,
+          },
         },
       },
     ],
@@ -551,8 +618,8 @@ module.exports = {
         loader: `img-optimize-loader`,
         options: {
           compress: {
-            optipng: {}
-          }
+            optipng: {},
+          },
         },
       },
     ],
@@ -563,6 +630,7 @@ module.exports = {
 Link to [optipng configuration](https://github.com/kevva/imagemin-optipng)
 
 ### `compress.pngquant`
+
 Type: `[Object|Boolean]`
 
 Compress png images.
@@ -581,8 +649,8 @@ module.exports = {
         loader: `img-optimize-loader`,
         options: {
           compress: {
-            pngquant: false
-          }
+            pngquant: false,
+          },
         },
       },
     ],
@@ -591,6 +659,7 @@ module.exports = {
 ```
 
 #### `Object`
+
 **webpack.config.js**
 
 ```js
@@ -601,8 +670,8 @@ module.exports = {
         loader: `img-optimize-loader`,
         options: {
           compress: {
-            pngquant: {}
-          }
+            pngquant: {},
+          },
         },
       },
     ],
@@ -613,6 +682,7 @@ module.exports = {
 Link to [pngquant configuration](https://github.com/imagemin/imagemin-pngquant)
 
 ### `compress.svgo`
+
 Type: `[Object|Boolean]`
 
 Compress svg images.
@@ -631,8 +701,8 @@ module.exports = {
         loader: `img-optimize-loader`,
         options: {
           compress: {
-            svgo: false
-          }
+            svgo: false,
+          },
         },
       },
     ],
@@ -641,6 +711,7 @@ module.exports = {
 ```
 
 #### `Object`
+
 **webpack.config.js**
 
 ```js
@@ -651,8 +722,8 @@ module.exports = {
         loader: `img-optimize-loader`,
         options: {
           compress: {
-            svgo: {}
-          }
+            svgo: {},
+          },
         },
       },
     ],
@@ -660,9 +731,10 @@ module.exports = {
 };
 ```
 
-Link to [svgo configuration](https://github.com/kevva/imagemin-svgo) 
+Link to [svgo configuration](https://github.com/kevva/imagemin-svgo)
 
 ### `compress.gifsicle`
+
 Type: `[Object|Boolean]`
 
 Compress gif images.
@@ -681,8 +753,8 @@ module.exports = {
         loader: `img-optimize-loader`,
         options: {
           compress: {
-            gifsicle: false
-          }
+            gifsicle: false,
+          },
         },
       },
     ],
@@ -691,6 +763,7 @@ module.exports = {
 ```
 
 #### `Object`
+
 **webpack.config.js**
 
 ```js
@@ -701,8 +774,8 @@ module.exports = {
         loader: `img-optimize-loader`,
         options: {
           compress: {
-            gifsicle: {}
-          }
+            gifsicle: {},
+          },
         },
       },
     ],
@@ -710,13 +783,64 @@ module.exports = {
 };
 ```
 
-Link to [gifsicle configuration](https://github.com/kevva/imagemin-gifsicle)
+### `compress.webp`
 
+Type: `[Object|Boolean]`
+Default: `false`
+
+Transform png/jpg into webp. Compress webp files.
+
+#### `Boolean`
+
+If you want to transform png/jpg into webp, you can set `webp` to `true`.
+
+**webpack.config.js**
+
+```js
+module.exports = {
+  module: {
+    rules: [
+      {
+        loader: `img-optimize-loader`,
+        options: {
+          compress: {
+            webp: true,
+          },
+        },
+      },
+    ],
+  },
+};
+```
+
+#### `Object`
+
+**webpack.config.js**
+
+```js
+module.exports = {
+  module: {
+    rules: [
+      {
+        loader: `img-optimize-loader`,
+        options: {
+          compress: {
+            webp: {},
+          },
+        },
+      },
+    ],
+  },
+};
+```
+
+Link to [webp configuration](https://github.com/imagemin/imagemin-webp#options)
 
 ## Inspiration
-* [image-webpack-loader](https://github.com/tcoopman/image-webpack-loader)
-* [url-loader](https://github.com/webpack/url-loader)
-* [imagemin](https://github.com/imagemin/imagemin)
+
+- [image-webpack-loader](https://github.com/tcoopman/image-webpack-loader)
+- [url-loader](https://github.com/webpack/url-loader)
+- [imagemin](https://github.com/imagemin/imagemin)
 
 ## License
 

@@ -10,7 +10,7 @@ const DEFAULT_INLINE_LIMIT = 5000;
 const DEFAULT_INLINE_ENCODING = 'base64';
 
 const DEFAULT_ES_MODULE = false;
-const DEFAULT_NAME = 'imgs/[contenthash].[ext]';
+const DEFAULT_NAME = 'imgs/[name].[contenthash:8].[ext]';
 
 const DEFAULT_INLINE_OPTION = {
   disable: false,
@@ -27,11 +27,7 @@ const LOSSY_LOW_COMPRESS_OPTION = {
   optipng: {
     optimizationLevel: 2,
   },
-  webp: {
-    quality: 100,
-    jpgQuality: 75,
-    pngQuality: 85,
-  },
+
   svgo: true,
 
   pngquant: {
@@ -52,11 +48,7 @@ const LOSSY_HIGH_COMPRESS_OPTION = {
   optipng: {
     optimizationLevel: 4,
   },
-  webp: {
-    quality: 100,
-    jpgQuality: 75,
-    pngQuality: 85,
-  },
+
   svgo: true,
 
   pngquant: {
@@ -78,9 +70,7 @@ const LOSELESS_COMPRESS_OPTION = {
   optipng: {
     optimizationLevel: 2,
   },
-  webp: {
-    lossless: true,
-  },
+
   svgo: true,
 };
 
@@ -90,5 +80,5 @@ export {
   LOSSY_LOW_COMPRESS_OPTION,
   LOSELESS_COMPRESS_OPTION,
   DEFAULT_ES_MODULE,
-  DEFAULT_NAME
+  DEFAULT_NAME,
 };

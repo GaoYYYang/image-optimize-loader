@@ -1,10 +1,10 @@
 {
-  "name": "img-optimize-loader",
-  "version": "1.0.2",
+  "name": "optimize-image-webpack-loader",
+  "version": "1.0.4",
   "description": "",
   "license": "MIT",
-  "repository": "GaoYYYang/img-loader",
-  "author": "gaoyang.lamb",
+  "repository": "GaoYYYang/image-optimize-loader",
+  "author": "GaoYYYang",
   "homepage": "https://github.com/GaoYYYang/image-optimize-loader",
   "bugs": "https://github.com/GaoYYYang/image-optimize-loader/issues",
   "main": "dist/index.js",
@@ -18,7 +18,7 @@
     "build": "cross-env NODE_ENV=production babel src -d dist --copy-files",
     "commitlint": "commitlint --from=master",
     "security": "npm audit",
-    "lint:prettier": "prettier \"{**/*,*}.{js,json,md,yml,css,ts}\" --list-different",
+    "lint:prettier": "prettier \"{**/*,*}.{js,json,md,yml,css}\" --write --list-different",
     "lint:js": "eslint --cache .",
     "lint": "npm-run-all -l -p \"lint:**\"",
     "test:only": "cross-env NODE_ENV=test jest",
@@ -30,7 +30,9 @@
     "release": "standard-version",
     "defaults": "webpack-defaults"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "peerDependencies": {
     "webpack": "^4.0.0 || ^5.0.0",
     "file-loader": "*"
@@ -75,5 +77,7 @@
     "standard-version": "^8.0.0",
     "webpack": "^4.43.0"
   },
-  "keywords": ["webpack"]
+  "keywords": [
+    "webpack"
+  ]
 }

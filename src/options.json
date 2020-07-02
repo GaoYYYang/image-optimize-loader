@@ -23,7 +23,16 @@
               "type": "boolean"
             },
             {
-              "enum": ["utf8", "utf16le", "latin1", "base64", "hex", "ascii", "binary", "ucs2"]
+              "enum": [
+                "utf8",
+                "utf16le",
+                "latin1",
+                "base64",
+                "hex",
+                "ascii",
+                "binary",
+                "ucs2"
+              ]
             }
           ]
         },
@@ -55,27 +64,69 @@
         },
         "mozjpeg": {
           "additionalProperties": true,
-          "type": "object"
+          "oneOf": [
+            {
+              "type": "object"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
         },
         "optipng": {
           "additionalProperties": true,
-          "type": "object"
+          "oneOf": [
+            {
+              "type": "object"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
         },
         "pngquant": {
           "additionalProperties": true,
-          "type": "object"
+          "oneOf": [
+            {
+              "type": "object"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
         },
         "gifsicle": {
           "additionalProperties": true,
-          "type": "object"
+          "oneOf": [
+            {
+              "type": "object"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
         },
         "webp": {
           "additionalProperties": true,
-          "type": "object"
+          "oneOf": [
+            {
+              "type": "object"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
         },
         "svgo": {
           "additionalProperties": true,
-          "type": "object"
+          "oneOf": [
+            {
+              "type": "object"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
         },
         "disableOnDevelopment": {
           "type": "boolean"
