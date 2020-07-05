@@ -6,6 +6,11 @@
 
 # image-optimize-loader
 
+[![npm][npm]][npm-url]
+[![node][node]][node-url]
+[![deps][deps]][deps-url]
+![test](https://github.com/GaoYYYang/image-optimize-loader/workflows/test/badge.svg?branch=master&event=push)
+
 This special **image optimize webpack loader** can:
 
 - Help you [**encode image** / **inline image**] and [**compress image** / **minify image**] when loaded with webpack.
@@ -845,3 +850,14 @@ Link to [webp configuration](https://github.com/imagemin/imagemin-webp#options)
 ## License
 
 [MIT](./LICENSE)
+
+[npm]: https://img.shields.io/npm/v/img-optimize-loader.svg
+[npm-url]: https://npmjs.com/package/img-optimize-loader
+[node]: https://img.shields.io/node/v/img-optimize-loader.svg
+[node-url]: https://nodejs.org
+[deps]: https://david-dm.org/GaoYYYang/image-optimize-loader.svg
+[deps-url]: https://david-dm.org/GaoYYYang/image-optimize-loader
+[tests]: https://github.com/GaoYYYang/image-optimize-loader/workflows/test/badge.svg
+[tests-url]: https://github.com/GaoYYYang/image-optimize-loader/actions
+[size]: https://packagephobia.now.sh/badge?p=img-optimize-loader
+[size-url]: https://packagephobia.now.sh/result?p=img-optimize-loader

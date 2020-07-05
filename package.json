@@ -24,15 +24,12 @@
     "test:only": "cross-env NODE_ENV=test jest",
     "test:watch": "npm run test:only -- --watch",
     "test:coverage": "npm run test:only -- --collectCoverageFrom=\"src/**/*.js\" --coverage",
-    "pretest": "npm run lint",
     "test": "npm run test:coverage",
     "prepare": "npm run build",
     "release": "standard-version",
     "defaults": "webpack-defaults"
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "peerDependencies": {
     "webpack": "^4.0.0 || ^5.0.0",
     "file-loader": "*"
@@ -77,11 +74,5 @@
     "standard-version": "^8.0.0",
     "webpack": "^4.43.0"
   },
-  "keywords": [
-    "webpack image loader",
-    "minify image",
-    "compress image",
-    "inline image",
-    "encode image"
-  ]
+  "keywords": ["webpack image loader", "minify image", "compress image", "inline image", "encode image"]
 }
