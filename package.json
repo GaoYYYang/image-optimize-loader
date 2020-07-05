@@ -30,7 +30,9 @@
     "release": "standard-version",
     "defaults": "webpack-defaults"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "peerDependencies": {
     "webpack": "^4.0.0 || ^5.0.0",
     "file-loader": "*"
@@ -75,5 +77,11 @@
     "standard-version": "^8.0.0",
     "webpack": "^4.43.0"
   },
-  "keywords": ["webpack image loader", "minify image", "compress image", "inline image", "encode image"]
+  "keywords": [
+    "webpack image loader",
+    "minify image",
+    "compress image",
+    "inline image",
+    "encode image"
+  ]
 }
