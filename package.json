@@ -1,7 +1,7 @@
 {
-  "name": "optimize-image-webpack-loader",
+  "name": "img-optimize-loader",
   "version": "1.0.4",
-  "description": "",
+  "description": "Image webpack loader. Minify image, compress image, encode image(eg: base64) and inline image automaticlly. Support PNG, JPG, JPEG, GIF, WEBP, SVG.",
   "license": "MIT",
   "repository": "GaoYYYang/image-optimize-loader",
   "author": "GaoYYYang",
@@ -30,9 +30,7 @@
     "release": "standard-version",
     "defaults": "webpack-defaults"
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "peerDependencies": {
     "webpack": "^4.0.0 || ^5.0.0",
     "file-loader": "*"
@@ -77,7 +75,5 @@
     "standard-version": "^8.0.0",
     "webpack": "^4.43.0"
   },
-  "keywords": [
-    "webpack"
-  ]
+  "keywords": ["webpack image loader", "minify image", "compress image", "inline image", "encode image"]
 }
