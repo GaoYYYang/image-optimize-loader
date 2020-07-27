@@ -1,6 +1,6 @@
 {
   "name": "img-optimize-loader",
-  "version": "1.0.4",
+  "version": "1.0.6",
   "description": "Image webpack loader. Minify image, compress image, encode image(eg: base64) and inline image automaticlly. Support PNG, JPG, JPEG, GIF, WEBP, SVG.",
   "license": "MIT",
   "repository": "GaoYYYang/image-optimize-loader",

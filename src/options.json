@@ -1,6 +1,13 @@
 {
   "type": "object",
   "properties": {
+    "name": {
+      "type": "string",
+      "description": "To specify the image file output path."
+    },
+    "esModule": {
+      "type": "boolean"
+    },
     "inline": {
       "type": "object",
       "properties": {
