@@ -19,7 +19,7 @@ import {
   LOSSY_LOW_COMPRESS_OPTION,
   LOSELESS_COMPRESS_OPTION,
   DEFAULT_ES_MODULE,
-  DEFAULT_NAME,
+  DEFAULT_NAME
 } from './constants';
 import schema from './options.json';
 
@@ -67,6 +67,7 @@ export default function loader(source) {
   const options = getOptions(this) || {};
   const { mode, resourcePath } = this;
   const ext = path.extname(resourcePath);
+  const { outputPath, publicPath, postTransformPublicPath, context, emitFile } = options;
   const esModule = options.esModule || DEFAULT_ES_MODULE;
   let name = options.name || DEFAULT_NAME;
   if (options.compress && options.compress.webp && /(png|jpe?g)$/i.test(ext)) {
@@ -77,15 +78,9 @@ export default function loader(source) {
   let compressOption = LOSSY_LOW_COMPRESS_OPTION;
   if (options.compress) {
     if (options.compress.mode === 'high') {
-      compressOption = Object.assign(
-        LOSSY_HIGH_COMPRESS_OPTION,
-        options.compress
-      );
+      compressOption = Object.assign(LOSSY_HIGH_COMPRESS_OPTION, options.compress);
     } else if (options.compress.mode === 'loseless') {
-      compressOption = Object.assign(
-        LOSELESS_COMPRESS_OPTION,
-        options.compress
-      );
+      compressOption = Object.assign(LOSELESS_COMPRESS_OPTION, options.compress);
     } else {
       compressOption = Object.assign(compressOption, options.compress);
     }
@@ -96,28 +91,24 @@ export default function loader(source) {
     inlineOption = Object.assign(inlineOption, options.inline);
   }
 
-  if (
-    mode === 'production' ||
-    compressOption.disableOnDevelopment === false ||
-    !compressOption.disable
-  ) {
+  if (mode === 'production' || compressOption.disableOnDevelopment === false || !compressOption.disable) {
     const callback = this.async();
     compress(source, compressOption)
-      .then((data) => {
+      .then(data => {
         inlineOrEmit.call(
           this,
-          { ...inlineOption, esModule, name },
+          { ...inlineOption, esModule, name, outputPath, publicPath, postTransformPublicPath, context, emitFile },
           data,
           callback
         );
       })
-      .catch((err) => {
+      .catch(err => {
         callback(err);
       });
   } else {
     inlineOrEmit.call(
       this,
-      { ...inlineOption, esModule, name },
+      { ...inlineOption, esModule, name, outputPath, publicPath, postTransformPublicPath, context, emitFile },
       source,
       this.callback
     );

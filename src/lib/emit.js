@@ -8,11 +8,16 @@
 const fileLoader = require('file-loader');
 
 export default function emit(content, options, callback) {
-  const { name, esModule } = options;
+  const { name, esModule, outputPath, publicPath, postTransformPublicPath, context, emitFile } = options;
   const fallbackLoaderContext = Object.assign({}, this, {
     query: {
       esModule,
       name,
+      outputPath,
+      publicPath,
+      postTransformPublicPath,
+      context,
+      emitFile,
     },
   });
 

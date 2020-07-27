@@ -1,6 +1,47 @@
 {
   "type": "object",
   "properties": {
+    "name": {
+      "type": "string",
+      "description": "To specify the image file output path."
+    },
+    "outputPath": {
+      "description": "A filesystem path where the target file(s) will be placed (https://github.com/webpack-contrib/file-loader#outputpath).",
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "instanceof": "Function"
+        }
+      ]
+    },
+    "emitFile": {
+      "description": "Enables/Disables emit files (https://github.com/webpack-contrib/file-loader#emitfile).",
+      "type": "boolean"
+    },
+    "publicPath": {
+      "description": "A custom public path for the target file(s) (https://github.com/webpack-contrib/file-loader#publicpath).",
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "instanceof": "Function"
+        }
+      ]
+    },
+    "postTransformPublicPath": {
+      "description": "A custom transformation function for post-processing the publicPath (https://github.com/webpack-contrib/file-loader#posttransformpublicpath).",
+      "instanceof": "Function"
+    },
+    "context": {
+      "description": "A custom file context (https://github.com/webpack-contrib/file-loader#context).",
+      "type": "string"
+    },
+    "esModule": {
+      "type": "boolean"
+    },
     "inline": {
       "type": "object",
       "properties": {
@@ -23,16 +64,7 @@
               "type": "boolean"
             },
             {
-              "enum": [
-                "utf8",
-                "utf16le",
-                "latin1",
-                "base64",
-                "hex",
-                "ascii",
-                "binary",
-                "ucs2"
-              ]
+              "enum": ["utf8", "utf16le", "latin1", "base64", "hex", "ascii", "binary", "ucs2"]
             }
           ]
         },

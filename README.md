@@ -270,6 +270,120 @@ module.exports = {
   },
 };
 ```
+### `outputPath`
+
+Type: `String|Function`
+Default: `undefined`
+
+Specify a filesystem path where the target file(s) will be placed.
+
+#### `String`
+
+**webpack.config.js**
+
+```js
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.(png|jpe?g|gif)$/i,
+        loader: 'img-optimize-loader',
+        options: {
+          outputPath: 'images',
+        },
+      },
+    ],
+  },
+};
+```
+
+#### `Function`
+
+**webpack.config.js**
+
+```js
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.(png|jpe?g|gif)$/i,
+        loader: 'img-optimize-loader',
+        options: {
+          outputPath: (url, resourcePath, context) => {
+            return `output_path/${url}`;
+          },
+        },
+      },
+    ],
+  },
+};
+```
+
+### `publicPath`
+
+Type: `String|Function`
+Default: [`__webpack_public_path__`](https://webpack.js.org/api/module-variables/#__webpack_public_path__-webpack-specific-)+outputPath
+
+Specifies a custom public path for the target file(s).
+
+#### `String`
+
+**webpack.config.js**
+
+```js
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.(png|jpe?g|gif)$/i,
+        loader: 'img-optimize-loader',
+        options: {
+          publicPath: 'assets',
+        },
+      },
+    ],
+  },
+};
+```
+
+#### `Function`
+
+**webpack.config.js**
+
+```js
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.(png|jpe?g|gif)$/i,
+        loader: 'img-optimize-loader',
+        options: {
+          publicPath: (url, resourcePath, context) => {
+            return `public_path/${url}`;
+          },
+        },
+      },
+    ],
+  },
+};
+```
+
+### `context`
+
+Type: `String`
+Default: [`context`](https://webpack.js.org/configuration/entry-context/#context)
+
+Specifies a custom file context.
+
+### `emitFile`
+
+Type: `Boolean`
+Default: `true`
+
+If true, emits a file (writes a file to the filesystem). If false, the loader
+will return a public URI but **will not** emit the file. It is often useful to
+disable this option for server-side packages.
+
 
 ### `inline.symbol`
 
